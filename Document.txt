@@ -1,0 +1,22 @@
+terraform init
+terraform plan -out example.tfplan
+terraform apply example.tfplan
+terraform graph > graph.dot
+
+Adding variables:
+##var
+
+variable "bucket_name" {
+    type = string
+}
+resource "aws_s3_bucket" "bucket5" {
+  bucket = var.bucket_name
+}
+
+##Locals
+locals {
+    aws_account = "${ data.aws_caller_identity.current.account_id}-${lower(data.aws_caller_identity.current.user_id)}" 
+}
+resource "aws_s3_bucket" "bucket6" {
+  bucket = "${local.aws_account}-bucket6"
+}

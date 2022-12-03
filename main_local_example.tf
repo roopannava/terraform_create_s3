@@ -1,10 +1,6 @@
 #Resources
 
 
-variable "bucket_name" {
-    type = string
-}
-
 resource "aws_s3_bucket" "bucket1" {
   bucket = "${data.aws_caller_identity.current.account_id}-bucket1"
 }
@@ -26,17 +22,14 @@ resource "aws_s3_bucket" "bucket4" {
    depends_on = [ aws_s3_bucket.bucket3  ]
 }
 
-resource "aws_s3_bucket" "bucket5" {
-  bucket = var.bucket_name
-}
-
+#Using local start
 locals {
     aws_account = "${ data.aws_caller_identity.current.account_id}-${lower(data.aws_caller_identity.current.user_id)}"
-    aws_account_1 = "${ data.aws_caller_identity.current.account_id}-${lower(data.aws_caller_identity.current.user_id)}"
 }
 resource "aws_s3_bucket" "bucket6" {
   bucket = "${local.aws_account}-bucket6"
 }
+#Using local end
 
 resource "aws_s3_bucket" "bucketX"{
     count = 2
