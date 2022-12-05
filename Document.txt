@@ -2,6 +2,8 @@ terraform init
 terraform plan -out example.tfplan
 terraform apply example.tfplan
 terraform graph > graph.dot
+terraform state list
+terraform destroy
 
 Adding variables:
 ##var

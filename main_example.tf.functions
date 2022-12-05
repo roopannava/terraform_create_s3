@@ -1,18 +1,15 @@
 #https://developer.hashicorp.com/terraform/language/functions
 #Locals
 locals {
-  l = ["one","two","three"]
-  upper_list = [ for item in local.l: upper(item)]
-  #This will create a map
-  upper_map =  {for item in local.l: item => upper(item)}
-  person = {
-    name : "ewewe"
-  }
+   ts = timestamp() //Returns current date
+   current_month = formatdate("MMM", local.ts)
+   tomorrow = formatdate("DD", timeadd(local.ts, "24h"))
 }
 
+output "date_time" {
 
-
-
+    value = "$local.current_month} ${local.tomorrow}"
+}
 #Resources
 
 resource "aws_s3_bucket" "bucket1" {
@@ -49,23 +46,3 @@ output "aws_availability_zones" {
     value = data.aws_availability_zones.available
 }
 
-output "iterations" {
-    value = local.upper_list
-}
-
-output "heredoc" {
-    value = <<-EOT
-        this is a test
-    EOT
-}
-
-output "directive" {
-    value = <<-EOT
-    this is a test
-    %{ if local.person.name == ""}
-        Sorry
-    %{ else }
-        Hi
-    %{ endif }        
-    EOT
-}
